@@ -83,13 +83,13 @@ export const defaultServiceVersion = 'v1';
  *
  * // do a POST request on https://api.example.com/my-service/v2/bar
  * const postResponse = await apiClient.withClient(async (client) => {
- *   return await client.get('/bar', {
+ *   return await client.post('/bar', {
  *     baz: 42
  *   })
  * })
  *
  * // do a DELETE request on https://api.example.com/my-2nd-service/beta/baz-resource/42
- * const deleteResponse = await apiClient.withClient(async (client) => {
+ * const deleteResponse = await betaApiClient.withClient(async (client) => {
  *   return await client.delete("/baz-resource/42")
  * })
  * ```

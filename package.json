@@ -1,6 +1,6 @@
 {
   "name": "@egomobile/api-client",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A generic REST client, designed for use in Kubernetes environment e.g.",
   "main": "lib/index.js",
   "engines": {

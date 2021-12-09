@@ -119,15 +119,29 @@ export function createServiceClient(options: ICreateServiceClientOptions): ApiCl
         throw new TypeError('options.clientOptions.baseURL must be of type string');
     }
 
+    let pathPrefix = options.clientOptions.pathPrefix;
+    if (pathPrefix) {
+        if (typeof pathPrefix !== 'string') {
+            throw new TypeError('options.clientOptions.pathPrefix must be of type string');
+        }
+    }
+
+    // remove starting and ending / in path prefix
+    while (pathPrefix.startsWith('/')) {
+        pathPrefix = pathPrefix.substring(1);
+    }
+    while (pathPrefix.endsWith('/')) {
+        pathPrefix = pathPrefix.substring(0, pathPrefix.length - 1);
+    }
+
     if (!baseURL.endsWith('/')) {
         baseURL += '/';
     }
 
-    baseURL += `${encodeURIComponent(service)}/${encodeURIComponent(version)}`;
-
     return new ApiClient({
         ...clientOptions,
 
-        baseURL
+        baseURL,
+        pathPrefix
     });
 }

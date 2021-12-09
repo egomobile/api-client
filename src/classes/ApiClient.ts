@@ -33,6 +33,10 @@ export interface IApiClientOptions {
      */
     oAuthPath?: string | null;
     /**
+     * A custom path prefix.
+     */
+    pathPrefix?: string | null;
+    /**
      * Additional / custom request headers.
      */
     headers?: any | null;
@@ -113,9 +117,22 @@ export class ApiClient {
             headers['Accept-Language'] = this.options.language;
         }
 
+        let pathPrefix: string = this.options.pathPrefix || '';
+        while (pathPrefix.startsWith('/')) {  // remove leading /
+            pathPrefix = pathPrefix.substring(1);
+        }
+        while (pathPrefix.endsWith('/')) {  // remove ending /
+            pathPrefix = pathPrefix.substring(0, pathPrefix.length - 1);
+        }
+
+        let baseURL = this.options.baseURL;
+        if (!baseURL.endsWith('/')) {
+            baseURL += '/';
+        }
+
         const clientOptions: AxiosRequestConfig<any> = {
             // default settings
-            baseURL: this.options.baseURL,
+            baseURL: baseURL + pathPrefix,
             headers: {
                 ...headers,
                 ...(this.options.headers || {})

@@ -29,6 +29,10 @@ export interface IApiClientOptions {
      */
     baseURL: string;
     /**
+     * The custom oAuth path. Default: '/auth/v1/oauth2/token'
+     */
+    oAuthPath?: string | null;
+    /**
      * Additional / custom request headers.
      */
     headers?: any | null;
@@ -47,6 +51,11 @@ export interface IApiClientOptions {
  */
 export type WithApiClientAction<TResult extends any = any> =
     (client: AxiosInstance) => Promise<TResult>;
+
+/**
+ * Default OAuth path.
+ */
+export const defaultOAuthPath = '/auth/v1/oauth2/token';
 
 /**
 * A generic API client.
@@ -75,7 +84,7 @@ export class ApiClient {
         });
 
         const oAuthResponse = await oAuthClient.post<any>(
-            '/auth/v1/oauth2/token',
+            this.options.oAuthPath || defaultOAuthPath,
             oAuthParams.toString()
         );
 

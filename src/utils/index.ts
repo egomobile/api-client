@@ -126,18 +126,6 @@ export function createServiceClient(options: ICreateServiceClientOptions): ApiCl
         }
     }
 
-    // remove starting and ending / in path prefix
-    while (pathPrefix.startsWith('/')) {
-        pathPrefix = pathPrefix.substring(1);
-    }
-    while (pathPrefix.endsWith('/')) {
-        pathPrefix = pathPrefix.substring(0, pathPrefix.length - 1);
-    }
-
-    if (!baseURL.endsWith('/')) {
-        baseURL += '/';
-    }
-
     return new ApiClient({
         ...clientOptions,
 

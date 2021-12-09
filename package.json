@@ -1,11 +1,33 @@
 {
   "name": "@egomobile/api-client",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A generic REST client, designed for use in Kubernetes environment e.g.",
   "main": "lib/index.js",
   "engines": {
     "node": ">=12.0.0"
   },
+  "files": [
+    "CHANGELOG.md",
+    "LICENSE",
+    "lib",
+    "!lib/**/*.map",
+    "README.md"
+  ],
+  "keywords": [
+    "node",
+    "js",
+    "ts",
+    "javascript",
+    "typescript",
+    "api",
+    "rest",
+    "oauth2",
+    "client credentials",
+    "client",
+    "http",
+    "https",
+    "ego"
+  ],
   "scripts": {
     "build": "del ./lib && tsc",
     "docs:generate": "del ./docs && typedoc --out ./docs ./src",

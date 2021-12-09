@@ -36,7 +36,7 @@ async function main() {
 
   // do a POST request on https://api.example.com/my-service2/v2/bar
   const postResponse = await apiClient.withClient(async (client) => {
-    return await client.get("/my-service2/v2/bar", {
+    return await client.post("/my-service2/v2/bar", {
       baz: 42,
     });
   });

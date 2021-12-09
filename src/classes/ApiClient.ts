@@ -55,10 +55,10 @@ export class ApiClient {
     private client: AxiosInstance | undefined;
 
     /**
-  * Initializes a new instance of that class.
-  *
-  * @param {IApiClientOptions} options Custom options.
-  */
+     * Initializes a new instance of that class.
+     *
+     * @param {IApiClientOptions} options Custom options.
+     */
     public constructor(
         public readonly options: IApiClientOptions
     ) { }
@@ -121,12 +121,45 @@ export class ApiClient {
     }
 
     /**
-  * Invokes an action, which can use a pre-defined client.
-  *
-  * @param {WithApiClientAction<TResult>} action The action to invoke.
-  *
-  * @returns {Promise<TResult>} The promise with the result of action.
-  */
+     * Invokes an action, which can use a pre-defined client.
+     *
+     * @example
+     * ```
+     * import ApiClient from '@egomobile/api-client'
+     *
+     * // setup a client with the following base URL:
+     * //
+     * // https://api.example.com/my-service/v1
+     * const apiClient = new ApiClient({
+     *   auth: {
+     *     clientId: 'my-client-id',
+     *     clientSecret: 'my-client-secret'
+     *   },
+     *   baseURL: 'https://api.example.com/'
+     * })
+     *
+     * // do a GET request on https://api.example.com/my-service/v1/foo
+     * const getResponse = await apiClient.withClient(async (client) => {
+     *   return await client.get('/foo')
+     * })
+     *
+     * // do a POST request on https://api.example.com/my-service/v1/bar
+     * const postResponse = await apiClient.withClient(async (client) => {
+     *   return await client.post('/bar', {
+     *     baz: 42
+     *   })
+     * })
+     *
+     * // do a DELETE request on https://api.example.com/my-service/v1/baz-resource/42
+     * const deleteResponse = await apiClient.withClient(async (client) => {
+     *   return await client.delete("/baz-resource/42")
+     * })
+     * ```
+     *
+     * @param {WithApiClientAction<TResult>} action The action to invoke.
+     *
+     * @returns {Promise<TResult>} The promise with the result of action.
+     */
     public async withClient<TResult extends any = any>(
         action: WithApiClientAction<TResult>
     ): Promise<TResult> {

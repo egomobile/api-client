@@ -147,6 +147,45 @@ export class ApiClient {
     }
 
     /**
+     * Gets a pre-defined client, that is already authenticated.
+     *
+     * @example
+     * ```
+     * import ApiClient from '@egomobile/api-client'
+     *
+     * // setup a client with the following base URL:
+     * //
+     * // https://api.example.com/my-service/v1
+     * const api = new ApiClient({
+     *   auth: {
+     *     clientId: 'my-client-id',
+     *     clientSecret: 'my-client-secret'
+     *   },
+     *   baseURL: 'https://api.example.com/'
+     * })
+     *
+     * // get an Axios instance, with is already authenticated
+     * const client = await api.getClient()
+     *
+     * // do a GET request on https://api.example.com/my-service/v1/foo
+     * const getResponse = await client.get('/foo')
+     *
+     * // do a POST request on https://api.example.com/my-service/v1/bar
+     * const postResponse = await client.post('/bar', {
+     *   baz: 42
+     * })
+     *
+     * // do a DELETE request on https://api.example.com/my-service/v1/baz-resource/42
+     * const deleteResponse = await client.delete("/baz-resource/42")
+     * ```
+     *
+     * @returns {Promise<AxiosInstance>} The promise with the client instance.
+     */
+    public getClient(): Promise<AxiosInstance> {
+        return this.withClient(async (client) => client);
+    }
+
+    /**
      * Invokes an action, which can use a pre-defined client.
      *
      * @example

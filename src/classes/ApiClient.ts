@@ -1,7 +1,7 @@
 /* eslint-disable unicorn/filename-case */
 
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
-import { URLSearchParams } from 'url';
+import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
+import { URLSearchParams } from "url";
 
 /**
  * Options for 'ApiClient' class.
@@ -59,7 +59,7 @@ export type WithApiClientAction<TResult extends any = any> =
 /**
  * Default OAuth path.
  */
-export const defaultOAuthPath = '/auth/v1/oauth2/token';
+export const defaultOAuthPath = "/auth/v1/oauth2/token";
 
 /**
 * A generic API client.
@@ -78,13 +78,15 @@ export class ApiClient {
 
     private async createNewClient(): Promise<AxiosInstance> {
         const oAuthParams = new URLSearchParams();
-        oAuthParams.set('grant_type', 'client_credentials');
-        oAuthParams.set('client_id', this.options.auth.clientId);
-        oAuthParams.set('client_secret', this.options.auth.clientSecret);
+        oAuthParams.set("grant_type", "client_credentials");
+        oAuthParams.set("client_id", this.options.auth.clientId);
+        oAuthParams.set("client_secret", this.options.auth.clientSecret);
 
         const oAuthClient = axios.create({
-            baseURL: this.options.baseURL,
-            validateStatus: () => true
+            "baseURL": this.options.baseURL,
+            "validateStatus": () => {
+                return true;
+            }
         });
 
         const oAuthResponse = await oAuthClient.post<any>(
@@ -100,44 +102,46 @@ export class ApiClient {
             throw new Error(`Unexpected response: ${oAuthResponse.status}`);
         }
 
-        if (typeof oAuthResponse.data !== 'object') {
+        if (typeof oAuthResponse.data !== "object") {
             throw new TypeError(`Unexpected response data: ${oAuthResponse.data}`);
         }
 
         const accessToken = oAuthResponse.data.access_token;
-        if (typeof accessToken !== 'string') {
+        if (typeof accessToken !== "string") {
             throw new TypeError(`Unexpected type of access_token: ${accessToken}`);
         }
 
         const headers: any = {
-            Authorization: `Bearer ${accessToken}`
+            "Authorization": `Bearer ${accessToken}`
         };
 
         if (this.options.language?.length) {
-            headers['Accept-Language'] = this.options.language;
+            headers["Accept-Language"] = this.options.language;
         }
 
-        let pathPrefix: string = this.options.pathPrefix || '';
-        while (pathPrefix.startsWith('/')) {  // remove leading /
+        let pathPrefix: string = this.options.pathPrefix || "";
+        while (pathPrefix.startsWith("/")) {  // remove leading /
             pathPrefix = pathPrefix.substring(1);
         }
-        while (pathPrefix.endsWith('/')) {  // remove ending /
+        while (pathPrefix.endsWith("/")) {  // remove ending /
             pathPrefix = pathPrefix.substring(0, pathPrefix.length - 1);
         }
 
         let baseURL = this.options.baseURL;
-        if (!baseURL.endsWith('/')) {
-            baseURL += '/';
+        if (!baseURL.endsWith("/")) {
+            baseURL += "/";
         }
 
         const clientOptions: AxiosRequestConfig<any> = {
             // default settings
-            baseURL: baseURL + pathPrefix,
-            headers: {
+            "baseURL": baseURL + pathPrefix,
+            "headers": {
                 ...headers,
                 ...(this.options.headers || {})
             },
-            validateStatus: (code) => code !== 401,
+            "validateStatus": (code) => {
+                return code !== 401;
+            },
 
             // the custom stuff
             ...(this.options.axiosOptions || {})
@@ -182,7 +186,9 @@ export class ApiClient {
      * @returns {Promise<AxiosInstance>} The promise with the client instance.
      */
     public getClient(): Promise<AxiosInstance> {
-        return this.withClient(async (client) => client);
+        return this.withClient(async (client) => {
+            return client;
+        });
     }
 
     /**
@@ -242,11 +248,14 @@ export class ApiClient {
             await updateWithNewClient();
         }
 
-        const invokeAction = () => action(client!);
+        const invokeAction = () => {
+            return action(client!);
+        };
 
         try {
             return await invokeAction();
-        } catch (error: any) {
+        }
+        catch (error: any) {
             // rethrow error by default
             let next: (() => Promise<any>) = async () => {
                 throw error;

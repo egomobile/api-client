@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU Lesser General Public License
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import { ApiClient, IApiClientOptions } from '../classes';
+import { ApiClient, IApiClientOptions } from "../classes";
 
 /**
  * Options for 'createServiceClient()' function.
@@ -36,7 +36,7 @@ export interface ICreateServiceClientOptions {
 /**
  * The default version of a service.
  */
-export const defaultServiceVersion = 'v1';
+export const defaultServiceVersion = "v1";
 
 /**
  * Creates a new API client instance, only for a specific service.
@@ -100,23 +100,23 @@ export const defaultServiceVersion = 'v1';
  */
 export function createServiceClient(options: ICreateServiceClientOptions): ApiClient {
     const service = options.service;
-    if (typeof service !== 'string') {
-        throw new TypeError('options.service must be of type string');
+    if (typeof service !== "string") {
+        throw new TypeError("options.service must be of type string");
     }
 
     const version = options.version || defaultServiceVersion;
-    if (typeof version !== 'string') {
-        throw new TypeError('options.version must be of type string');
+    if (typeof version !== "string") {
+        throw new TypeError("options.version must be of type string");
     }
 
     const clientOptions = options.clientOptions;
-    if (typeof clientOptions !== 'object') {
-        throw new TypeError('options.clientOptions must be of type object');
+    if (typeof clientOptions !== "object") {
+        throw new TypeError("options.clientOptions must be of type object");
     }
 
     let baseURL = options.clientOptions.baseURL;
-    if (typeof baseURL !== 'string') {
-        throw new TypeError('options.clientOptions.baseURL must be of type string');
+    if (typeof baseURL !== "string") {
+        throw new TypeError("options.clientOptions.baseURL must be of type string");
     }
 
     const pathPrefix = `${encodeURIComponent(service)}/${encodeURIComponent(version)}`;
